@@ -41,7 +41,7 @@ const MongoStore = require('connect-mongo');
 //     console.log("connected");
 // })
 
-mongo.connect('mongodb://127.0.0.1:27017/YelpCamp')
+mongo.connect(process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/YelpCamp')
     .then(() => {
         console.log("Database active");
     }
@@ -66,7 +66,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 const store = MongoStore.create({
-    mongoUrl: "mongodb://127.0.0.1:27017/YelpCamp",
+    mongoUrl: process.env.MONGO_URL,
     touchAfter: 60 * 60 * 24,
     crypto: {
         secret: "thisisassecret"
