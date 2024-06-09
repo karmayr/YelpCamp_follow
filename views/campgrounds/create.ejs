@@ -1,0 +1,25 @@
+<% layout("layouts/boilerplate") %>
+<div class="container p-5 w-50">
+  <h1>Create new Campground</h1>
+  <form action="/camps" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+    <label for="title" class="form-label">Title</label>
+    <input type="text" class="form-control" id="title" placeholder="title here" name="Campground[title]" required />
+
+    <!-- <label for="imageUrl" class="form-label">Image</label>
+    <input type="text" class="form-control" id="imageUrl" placeholder="image Url" name="Campground[imageUrl]" required> -->
+    <label for="image" class="form-label">Image</label>
+    <!-- <input type="file" class="form-control" id="image" placeholder="image" name="Campground[image]" required> -->
+    <input type="file" class="form-control" id="image" placeholder="image" name="image" required multiple>
+
+    <label for="location" class="form-label">Location</label>
+    <input type="text" class="form-control" id="location" placeholder="Location" name="Campground[location]" required>
+
+    <label for="price" class="form-label">Price</label>
+    <input type="text" class="form-control" id="price" name="Campground[price]" required />
+
+    <label for="desc" class="form-label">Description</label>
+    <input type="text" class="form-control" name="Campground[desc]" id="desc" required />
+
+    <div class="container text-center mt-3"><button class="btn  btn-dark" type="submit">submit</button></div>
+  </form>
+</div>

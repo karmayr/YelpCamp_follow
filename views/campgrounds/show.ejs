@@ -1,0 +1,105 @@
+<% layout("layouts/boilerplate") %>
+<link rel="stylesheet" href="/css/starRating.css">
+<div class="container bg-dark-subtle  rounded-1 p-3 ">
+  <div class="row ">
+    <div class="col-4 d-flex align-items-center justify-content-center ">
+      <div class="card" style="width: 18rem;">
+        <!-- <% for (let img of camp.images){ %>
+        <img src="<%= img.url %>" class="card-img-top" alt="Camp Image">
+        <% } %> -->
+        <div id="carouselExampleFade" class="carousel slide carousel-fade">
+          <div class="carousel-inner">
+            <% camp.images.forEach((img,i) => { %>
+            <div class="carousel-item <%= i === 0 ? "active" : "" %>">
+              <img src="<%= img.url %>" class="d-block w-100" alt="...">
+            </div>
+            <% }) %>
+          </div>
+          <% if(camp.images.length > 1) { %>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+          <% } %>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title"><%= camp.title %></h5>
+          <p class="form-label "><%= camp.author.username %></p>
+          <p class="card-text"><%= camp.description %></p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">$<%= camp.price %></li>
+          <li class="list-group-item"><%= camp.location %></li>
+          <li class="list-group-item">A third item</li>
+        </ul>
+        <% if(currentUser && currentUser.equals(camp.author)) {%>
+        <div class="card-body">
+          <form action="/camps/<%= camp._id %>?_method=DELETE" method="post">
+            <a href="/camps/<%= camp._id %>/edit" class="card-link">Update Camp</a>
+            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+          </form>
+        </div>
+        <% } %>
+      </div>
+    </div>
+    <div class="col-4  d-flex align-items-center justify-content-center">
+      <% if(currentUser) {%>
+      <form action="/camps/<%= camp.id %>/reviews" method="post" class="needs-validation" novalidate>
+        <h3>Add a Review</h3>
+        <div class="mb-2">
+          <label class="form-label " for="review">Review</label>
+          <textarea class="form-control" name="review[review]" id="review" cols="30" rows="2" required></textarea>
+        </div>
+        <div class="mb-2">
+          <!-- <label class="form-label " for="rating">Rating</label>
+          <input class="form-range" type="range" name="review[rating]" id="rating" min="1" max="5" value="0" required> -->
+          <fieldset class="starability-basic">
+            <legend>Rating</legend>
+            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked
+              aria-label="No rating." />
+            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+            <label for="first-rate1" title="Terrible">1 star</label>
+            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+            <label for="first-rate2" title="Not good">2 stars</label>
+            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+            <label for="first-rate3" title="Average">3 stars</label>
+            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+            <label for="first-rate4" title="Very good">4 stars</label>
+            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+            <label for="first-rate5" title="Amazing">5 stars</label>
+          </fieldset>
+        </div>
+        <div>
+          <button class="btn btn-info px-3 py-1">Submit</button>
+        </div>
+      </form>
+      <% } %>
+    </div>
+    <div class="col-4  ">
+      <% for (let review of camp.reviews) { %>
+      <div class="card mb-2">
+        <div class="card-body d-flex justify-content-between ">
+          <h6><%= review.review %></h6>
+          <p class="starability-result" data-rating="<%= review.rating %>">
+            Rated: <%= review.rating %> stars
+          </p>
+          <div class="mb-1 d-block ">
+            <%= review.author.username %>
+          </div>
+          <% if(currentUser && review.author._id.equals(currentUser._id)) {%>
+          <form action="/camps/<%= camp._id %>/reviews/<%= review._id %>?_method=DELETE" method="post">
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+          </form>
+          <% } %>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>
